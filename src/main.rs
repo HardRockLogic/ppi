@@ -1,3 +1,9 @@
+use std::dbg;
+
+use ppi::ScreenData;
+
 fn main() {
-    println!("Hello, world!");
+    let ppi: ScreenData = argh::from_env();
+
+    dbg!(ppi);
 }
