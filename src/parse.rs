@@ -7,22 +7,22 @@ use argh::FromArgs;
 pub struct ScreenData {
     /// screen diagonal value
     #[argh(positional)]
-    diagonal: u32,
+    pub(crate) diagonal: u32,
     /// custom resolution in format 1366x768 where x is any alphabetic character
     #[argh(option, short = 'r', from_str_fn(parse_resolution))]
-    resulution: Option<[u32; 2]>,
+    pub(crate) resolution: Option<[u32; 2]>,
     /// standart 16:9 hd resollution
     #[argh(switch, short = 'h')]
-    hd: bool,
+    pub(crate) hd: bool,
     /// standart 16:9 full hd resollution (1920x1080)
     #[argh(switch, short = 'f')]
-    fhd: bool,
+    pub(crate) fhd: bool,
     /// standart 16:9 quad hd resollution
     #[argh(switch, short = 'q')]
-    qhd: bool,
+    pub(crate) qhd: bool,
     /// standart 16:9 ultra hd resollution
     #[argh(switch, short = 'u')]
-    uhd: bool,
+    pub(crate) uhd: bool,
 }
 
 fn parse_resolution(i: &str) -> Result<[u32; 2], String> {

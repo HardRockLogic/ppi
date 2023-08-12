@@ -1,9 +1,9 @@
-use std::dbg;
+use std::println;
 
-use ppi::ScreenData;
+use ppi::PPIHandle;
 
 fn main() {
-    let ppi: ScreenData = argh::from_env();
+    let handle = PPIHandle::ppi_calc();
 
-    dbg!(ppi);
+    println!("\nscreen PPI is: {}\n", handle.ppi);
 }
