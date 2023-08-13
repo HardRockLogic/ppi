@@ -7,7 +7,7 @@ use argh::FromArgs;
 pub struct ScreenData {
     /// screen diagonal value
     #[argh(positional)]
-    pub(crate) diagonal: u32,
+    pub(crate) diagonal: f32,
     /// custom resolution in format 1366x768 where x is any alphabetic character
     #[argh(option, short = 'r', from_str_fn(parse_resolution))]
     pub(crate) resolution: Option<[u32; 2]>,
