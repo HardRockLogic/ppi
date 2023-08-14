@@ -30,23 +30,40 @@ impl PPIHandle {
 
         let mut screen: Option<ScreenEdges> = None;
 
+        let mut parsed_res_count: u8 = 0;
+
         if let Some(edges) = data.resolution {
             let width = edges[0] as f32;
             let height = edges[1] as f32;
             screen = Some(ScreenEdges::new(width, height));
+            parsed_res_count += 1;
         }
 
+        if data.hd {
+            screen = Some(ScreenEdges::new(1200., 720.));
+            parsed_res_count += 1;
+        }
         if data.fhd {
             screen = Some(ScreenEdges::new(1920., 1080.));
+            parsed_res_count += 1;
         }
         if data.qhd {
             screen = Some(ScreenEdges::new(2560., 1440.));
+            parsed_res_count += 1;
         }
         if data.uhd {
             screen = Some(ScreenEdges::new(3840., 2160.));
+            parsed_res_count += 1;
         }
 
         let total_px: u32;
+
+        if parsed_res_count > 1 {
+            eprintln!(
+                "\nToo many resolution options were given, to list available options see --help note.\n"
+            );
+            std::process::exit(1);
+        }
 
         let diagonal_in_pixels = match screen {
             Some(edges) => {

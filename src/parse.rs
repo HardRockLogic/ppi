@@ -29,11 +29,37 @@ fn parse_resolution(i: &str) -> Result<[u32; 2], String> {
     let chr = i
         .chars()
         .find(|ch| ch.is_alphabetic())
-        .expect("expected alphabetic delimetr");
+        .ok_or(Err("Expected alphabetic delimetr".to_string()));
+
+    let chr = match chr {
+        Ok(delimetr) => delimetr,
+        Err(err) => return err,
+    };
 
     let mut iter = i.split(chr);
-    let a = iter.next().unwrap().parse::<u32>().unwrap();
-    let b = iter.next().unwrap().parse::<u32>().unwrap();
+    let a = iter
+        .next()
+        .unwrap()
+        .parse::<u32>()
+        .map_err(|_| Err("Resolution should be numeric".to_string()));
+    let b = iter
+        .next()
+        .unwrap()
+        .parse::<u32>()
+        .map_err(|_| Err("Resolution should be numeric".to_string()));
+
+    let a = match a {
+        Ok(value) => value,
+        Err(err) => {
+            return err;
+        }
+    };
+    let b = match b {
+        Ok(value) => value,
+        Err(err) => {
+            return err;
+        }
+    };
 
     Ok([a, b])
 }
