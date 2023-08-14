@@ -19,7 +19,10 @@ fn main() {
         ],
     ]
     .table()
-    .title(vec!["Propery".cell().bold(true), "Value".cell().bold(true)])
+    .title(vec![
+        "Property".cell().bold(true),
+        "Value".cell().bold(true),
+    ])
     .bold(true);
 
     let display = table.display().unwrap();
