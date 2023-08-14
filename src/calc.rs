@@ -8,6 +8,14 @@ struct ScreenEdges {
     height: f32,
 }
 
+fn gcd(a: f32, b: f32) -> f32 {
+    if b == 0. {
+        a
+    } else {
+        gcd(b, a % b)
+    }
+}
+
 impl ScreenEdges {
     fn new(width: f32, height: f32) -> Self {
         Self { width, height }
@@ -16,12 +24,19 @@ impl ScreenEdges {
     fn diagonal_in_pixels(&self) -> f32 {
         (self.width.powi(2) + self.height.powi(2)).sqrt()
     }
+
+    fn aspect_ratio(&self) -> (f32, f32) {
+        let common = gcd(self.height, self.width);
+
+        ((self.width / common), (self.height / common))
+    }
 }
 
 pub struct PPIHandle {
     pub ppi: f32,
     pub ppi_square: f32,
     pub total_px: u32,
+    pub aspect_ratio: (f32, f32),
 }
 
 impl PPIHandle {
@@ -65,10 +80,10 @@ impl PPIHandle {
             std::process::exit(1);
         }
 
-        let diagonal_in_pixels = match screen {
+        let (diagonal_in_pixels, aspect_ratio) = match screen {
             Some(edges) => {
                 total_px = edges.width as u32 * edges.height as u32;
-                edges.diagonal_in_pixels()
+                (edges.diagonal_in_pixels(), edges.aspect_ratio())
             }
             None => {
                 eprintln!("\nNo resulution option were gieven, see --help note.\n");
@@ -83,6 +98,7 @@ impl PPIHandle {
             ppi,
             ppi_square,
             total_px,
+            aspect_ratio,
         }
     }
 }

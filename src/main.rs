@@ -1,14 +1,26 @@
-use cli_table::{format::Justify, Cell, Style, Table};
+use cli_table::{format::Justify, Cell, Color, Style, Table};
 use ppi::PPIHandle;
 
 fn main() {
     let handle = PPIHandle::new();
     let ppi_rounded = format!("{:.2}", handle.ppi);
-    let ppi_square_rounded = format!("{:.2}", handle.ppi_square);
+    let ppi_square_rounded = format_with_commas(handle.ppi_square); //format!("{:.2}", handle.ppi_square);
     let total_px_pretty = format_with_commas(handle.total_px);
+    let aspec_ration_formated = format!(
+        "{}/{} ({:.2}:1)",
+        handle.aspect_ratio.0 as u32,
+        handle.aspect_ratio.1 as u32,
+        handle.aspect_ratio.0 / handle.aspect_ratio.1
+    );
 
     let table = vec![
-        vec!["PPI".cell(), ppi_rounded.cell().justify(Justify::Right)],
+        vec![
+            "PPI".cell(),
+            ppi_rounded
+                .cell()
+                .justify(Justify::Right)
+                .foreground_color(Some(Color::Red)),
+        ],
         vec![
             "PPI²".cell(),
             ppi_square_rounded.cell().justify(Justify::Right),
@@ -16,6 +28,10 @@ fn main() {
         vec![
             "Total Px".cell(),
             total_px_pretty.cell().justify(Justify::Right),
+        ],
+        vec![
+            "Aspect ratio".cell(),
+            aspec_ration_formated.cell().justify(Justify::Right),
         ],
     ]
     .table()
@@ -31,7 +47,21 @@ fn main() {
 }
 
 fn format_with_commas<T: ToString>(input: T) -> String {
-    let binding_chunk = input.to_string().chars().rev().collect::<Vec<_>>();
+    let mut stringed = input.to_string();
+    let mut after_period: Option<_> = None;
+    let mut base: Option<String> = None;
+
+    if stringed.contains(".") {
+        let mut iter = stringed.split(".");
+        base = Some(iter.next().unwrap().to_string());
+        after_period = Some(iter.next().unwrap().to_string());
+    }
+
+    if let Some(num) = base {
+        stringed = num;
+    }
+
+    let binding_chunk = stringed.chars().rev().collect::<Vec<_>>();
     let chunked_iter = binding_chunk.chunks(3);
 
     let chunks: Vec<String> = chunked_iter
@@ -39,5 +69,11 @@ fn format_with_commas<T: ToString>(input: T) -> String {
         .map(|chunk| chunk.iter().rev().collect())
         .collect();
 
-    chunks.join(",")
+    let mut output = chunks.join(",");
+    if let Some(remainder) = after_period {
+        output.push('.');
+        output.push_str(&remainder);
+    }
+
+    output
 }
