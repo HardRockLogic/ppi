@@ -55,7 +55,7 @@ impl PPIHandle {
         }
 
         if data.hd {
-            screen = Some(ScreenEdges::new(1200., 720.));
+            screen = Some(ScreenEdges::new(1280., 720.));
             parsed_res_count += 1;
         }
         if data.fhd {

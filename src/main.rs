@@ -47,21 +47,22 @@ fn main() {
 }
 
 fn format_with_commas<T: ToString>(input: T) -> String {
-    let mut stringed = input.to_string();
+    let stringed = input.to_string();
+
     let mut after_period: Option<_> = None;
-    let mut base: Option<String> = None;
+    let mut base: Option<_> = None;
 
     if stringed.contains(".") {
         let mut iter = stringed.split(".");
-        base = Some(iter.next().unwrap().to_string());
-        after_period = Some(iter.next().unwrap().to_string());
+        base = Some(iter.next().unwrap());
+        after_period = Some(iter.next().unwrap());
     }
 
-    if let Some(num) = base {
-        stringed = num;
-    }
+    let binding_chunk: Vec<_> = match base {
+        Some(num) => num.chars().rev().collect::<Vec<_>>(),
+        None => stringed.chars().rev().collect::<Vec<_>>(),
+    };
 
-    let binding_chunk = stringed.chars().rev().collect::<Vec<_>>();
     let chunked_iter = binding_chunk.chunks(3);
 
     let chunks: Vec<String> = chunked_iter
@@ -72,7 +73,7 @@ fn format_with_commas<T: ToString>(input: T) -> String {
     let mut output = chunks.join(",");
     if let Some(remainder) = after_period {
         output.push('.');
-        output.push_str(&remainder);
+        output.push_str(remainder);
     }
 
     output

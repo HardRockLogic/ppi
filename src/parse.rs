@@ -11,16 +11,16 @@ pub struct ScreenData {
     /// custom resolution in format 1366x768 where x is any alphabetic character
     #[argh(option, short = 'r', from_str_fn(parse_resolution))]
     pub(crate) resolution: Option<[u32; 2]>,
-    /// standart 16:9 hd resollution
+    /// standart 16:9 hd resollution (1280x720)
     #[argh(switch, short = 'h')]
     pub(crate) hd: bool,
     /// standart 16:9 full hd resollution (1920x1080)
     #[argh(switch, short = 'f')]
     pub(crate) fhd: bool,
-    /// standart 16:9 quad hd resollution
+    /// standart 16:9 quad hd resollution (2560x1440)
     #[argh(switch, short = 'q')]
     pub(crate) qhd: bool,
-    /// standart 16:9 ultra hd resollution
+    /// standart 16:9 ultra hd resollution (3840x2160)
     #[argh(switch, short = 'u')]
     pub(crate) uhd: bool,
 }
