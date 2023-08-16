@@ -4,11 +4,11 @@ use std::eprintln;
 use super::parse::ScreenData;
 
 struct ScreenEdges {
-    width: f32,
-    height: f32,
+    width: f64,
+    height: f64,
 }
 
-fn gcd(a: f32, b: f32) -> f32 {
+fn gcd(a: f64, b: f64) -> f64 {
     if b == 0. {
         a
     } else {
@@ -17,15 +17,15 @@ fn gcd(a: f32, b: f32) -> f32 {
 }
 
 impl ScreenEdges {
-    fn new(width: f32, height: f32) -> Self {
+    fn new(width: f64, height: f64) -> Self {
         Self { width, height }
     }
 
-    fn diagonal_in_pixels(&self) -> f32 {
+    fn diagonal_in_pixels(&self) -> f64 {
         (self.width.powi(2) + self.height.powi(2)).sqrt()
     }
 
-    fn aspect_ratio(&self) -> (f32, f32) {
+    fn aspect_ratio(&self) -> (f64, f64) {
         let common = gcd(self.height, self.width);
 
         ((self.width / common), (self.height / common))
@@ -33,10 +33,10 @@ impl ScreenEdges {
 }
 
 pub struct PPIHandle {
-    pub ppi: f32,
-    pub ppi_square: f32,
+    pub ppi: f64,
+    pub ppi_square: f64,
     pub total_px: u32,
-    pub aspect_ratio: (f32, f32),
+    pub aspect_ratio: (f64, f64),
 }
 
 impl PPIHandle {
@@ -48,8 +48,8 @@ impl PPIHandle {
         let mut parsed_res_count: u8 = 0;
 
         if let Some(edges) = data.resolution {
-            let width = edges[0] as f32;
-            let height = edges[1] as f32;
+            let width = edges[0] as f64;
+            let height = edges[1] as f64;
             screen = Some(ScreenEdges::new(width, height));
             parsed_res_count += 1;
         }
@@ -91,7 +91,7 @@ impl PPIHandle {
             }
         };
 
-        let ppi = diagonal_in_pixels / data.diagonal;
+        let ppi = diagonal_in_pixels / data.diagonal as f64;
         let ppi_square = ppi * ppi;
 
         Self {

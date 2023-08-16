@@ -95,6 +95,7 @@ version = "0.1.0"
 dependencies = [
  "argh",
  "cli-table",
+ "round",
 ]
 
 [[package]]
@@ -114,6 +115,12 @@ checksum = "50f3b39ccfb720540debaa0164757101c08ecb8d326b15358ce76a62c7e85965"
 dependencies = [
  "proc-macro2",
 ]
+
+[[package]]
+name = "round"
+version = "0.1.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b02705db4fa872ae37e464fc803b7ffa574e6c4a5e112c52a82550f9dd63b657"
 
 [[package]]
 name = "ryu"

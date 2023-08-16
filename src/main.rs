@@ -1,10 +1,11 @@
 use cli_table::{format::Justify, Cell, Color, Style, Table};
 use ppi::PPIHandle;
+use round::round;
 
 fn main() {
     let handle = PPIHandle::new();
     let ppi_rounded = format!("{:.2}", handle.ppi);
-    let ppi_square_rounded = format_with_commas(handle.ppi_square); //format!("{:.2}", handle.ppi_square);
+    let ppi_square_rounded = format_with_commas(round(handle.ppi_square, 2));
     let total_px_pretty = format_with_commas(handle.total_px);
     let aspec_ration_formated = format!(
         "{}/{} ({:.2}:1)",
