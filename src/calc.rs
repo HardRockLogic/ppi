@@ -1,8 +1,9 @@
 #![allow(dead_code, unused_variables)]
-use std::eprintln;
+use std::{eprintln, unreachable};
 
 use super::parse::ScreenData;
 
+#[derive(Default)]
 struct ScreenEdges {
     width: f64,
     height: f64,
@@ -32,6 +33,39 @@ impl ScreenEdges {
     }
 }
 
+enum State {
+    NotAssigned,
+    Assigned,
+    Redundant,
+}
+
+impl State {
+    fn new() -> Self {
+        Self::NotAssigned
+    }
+
+    fn update(self) -> Self {
+        match self {
+            Self::NotAssigned => Self::Assigned,
+            Self::Assigned => Self::Redundant,
+            Self::Redundant => self,
+        }
+    }
+}
+
+struct StateTracker(Option<State>);
+
+impl StateTracker {
+    fn new() -> Self {
+        Self(Some(State::new()))
+    }
+
+    fn update(&mut self) {
+        let state_ref = self.0.take();
+        self.0 = Some(state_ref.unwrap().update());
+    }
+}
+
 pub struct PPIHandle {
     pub ppi: f64,
     pub ppi_square: f64,
@@ -43,52 +77,51 @@ impl PPIHandle {
     pub fn new() -> Self {
         let data: ScreenData = argh::from_env();
 
-        let mut screen: Option<ScreenEdges> = None;
-
-        let mut parsed_res_count: u8 = 0;
+        let mut screen = ScreenEdges::default();
+        let mut state = StateTracker::new();
 
         if let Some(edges) = data.resolution {
             let width = edges[0] as f64;
             let height = edges[1] as f64;
-            screen = Some(ScreenEdges::new(width, height));
-            parsed_res_count += 1;
+            screen = ScreenEdges::new(width, height);
+            state.update();
         }
 
         if data.hd {
-            screen = Some(ScreenEdges::new(1280., 720.));
-            parsed_res_count += 1;
+            screen = ScreenEdges::new(1280., 720.);
+            state.update();
         }
         if data.fhd {
-            screen = Some(ScreenEdges::new(1920., 1080.));
-            parsed_res_count += 1;
+            screen = ScreenEdges::new(1920., 1080.);
+            state.update();
         }
         if data.qhd {
-            screen = Some(ScreenEdges::new(2560., 1440.));
-            parsed_res_count += 1;
+            screen = ScreenEdges::new(2560., 1440.);
+            state.update();
         }
         if data.uhd {
-            screen = Some(ScreenEdges::new(3840., 2160.));
-            parsed_res_count += 1;
+            screen = ScreenEdges::new(3840., 2160.);
+            state.update();
         }
 
         let total_px: u32;
 
-        if parsed_res_count > 1 {
-            eprintln!(
-                "\nToo many resolution options were given, to list available options see --help note.\n"
-            );
-            std::process::exit(1);
-        }
-
-        let (diagonal_in_pixels, aspect_ratio) = match screen {
-            Some(edges) => {
-                total_px = edges.width as u32 * edges.height as u32;
-                (edges.diagonal_in_pixels(), edges.aspect_ratio())
-            }
-            None => {
-                eprintln!("\nNo resulution option were gieven, see --help note.\n");
+        let (diagonal_in_pixels, aspect_ratio) = match state.0 {
+            Some(State::NotAssigned) => {
+                eprintln!("\nNo resulution option were gieven, to list available options see --help note.\n");
                 std::process::exit(1);
             }
+            Some(State::Assigned) => {
+                total_px = screen.width as u32 * screen.height as u32;
+                (screen.diagonal_in_pixels(), screen.aspect_ratio())
+            }
+            Some(State::Redundant) => {
+                eprintln!(
+                    "\nToo many resolution options were given, to list available options see --help note.\n"
+                );
+                std::process::exit(1);
+            }
+            None => unreachable!(),
         };
 
         let ppi = diagonal_in_pixels / data.diagonal as f64;
