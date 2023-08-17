@@ -5,6 +5,7 @@ PPI is a lightweight easy to use command line calculator for (who'd guessed) cal
 If you like me and for some reason need a convenient instrument to calculate ppi and other screen related values - feel free to use it.
 
 ## Installation
+
 ### Building from source
 
 To build this app you'll need a cargo installed. The easiest way to do so is to install latest stable release of [Rust](https://doc.rust-lang.org/cargo/getting-started/installation.html).
@@ -14,22 +15,40 @@ Clone the project via HTTP
 ```bash
 git clone https://github.com/HardRockLogic/ppi.git
 ```
+
 or use SSH if you've set your key already.
+
 ```bash
 git clone git@github.com:HardRockLogic/ppi.git
 ```
+
 cd into directory you've cloned project to and build it.
+
 ```bash
 cargo build --release
 ```
+
 Then you have to add binary to your $PATH directory and you will be ready to use it. If your using Mac or Linux, and your usr/bin/ directory have no other binaries named ppi you can just launch this script:
+
 ```bash
+chmod +x update_bin.sh
 ./update_bin.sh
 # enter your sudo password here
 ```
 
+or just run it with `bash` without separatly giving execution permission
+
+```bash
+bash update_bin.sh
+# enter your sudo password here
+```
+
+From here you can delete file with source code and use standalone binary application.
+
 ## Usage
+
 You can run ppi --help to retrieve help message and view available options.
+
 ```bash
  ppi --help
 Usage: ppi <diagonal> [-r <resolution>] [-h] [-f] [-q] [-u]
@@ -49,6 +68,7 @@ Options:
   --help            display usage information
 
 ```
+
 ```bash
  ppi 14.2 -r 3024x1964
 +--------------+------------------+
