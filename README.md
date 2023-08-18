@@ -22,17 +22,16 @@ or use SSH if you've set your key already.
 git clone git@github.com:HardRockLogic/ppi.git
 ```
 
-cd into directory you've cloned project to and build it.
+`cd` into directory you've cloned project to and build it.
 
 ```bash
 cargo build --release
 ```
 
-Then you have to add binary to your $PATH directory and you will be ready to use it. If your using Mac or Linux, and your usr/bin/ directory have no other binaries named ppi you can just launch this script:
+Then you have to add binary to your `$PATH` directory and you will be ready to use it. If you use Mac or Linux, and your `usr/bin/` directory have no other binaries named **ppi** you can just launch this script:
 
 ```bash
-chmod +x update_bin.sh
-./update_bin.sh
+chmod +x update_bin.sh && ./update_bin.sh
 # enter your sudo password here
 ```
 
@@ -102,5 +101,3 @@ ppi 27 --uhd
 
 Pull requests are welcome. For major changes, please open an issue first
 to discuss what you would like to change.
-
-Please make sure to update tests as appropriate.
