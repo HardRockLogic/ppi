@@ -10,16 +10,10 @@ If you like me and for some reason need a convenient instrument to calculate ppi
 
 To build this app you'll need a cargo installed. The easiest way to do so is to install latest stable release of [Rust](https://doc.rust-lang.org/cargo/getting-started/installation.html).
 
-Clone the project via HTTP
+Clone the project
 
 ```bash
 git clone https://github.com/HardRockLogic/ppi.git
-```
-
-or use SSH if you've set your key already.
-
-```bash
-git clone git@github.com:HardRockLogic/ppi.git
 ```
 
 `cd` into directory you've cloned project to and build it.
