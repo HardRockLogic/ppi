@@ -1,7 +1,7 @@
 #![allow(dead_code, unused_variables)]
 use std::{eprintln, unreachable};
 
-use super::parse::ScreenData;
+use super::args::ScreenData;
 
 #[derive(Default)]
 struct ScreenEdges {

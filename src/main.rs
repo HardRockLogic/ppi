@@ -4,10 +4,10 @@ use round::round;
 
 fn main() {
     let handle = PPIHandle::new();
-    let ppi_rounded = format!("{:.2}", handle.ppi);
-    let ppi_square_rounded = format_with_commas(round(handle.ppi_square, 2));
+    let ppi_pretty = format!("{:.2}", handle.ppi);
+    let ppi_square_pretty = format_with_commas(round(handle.ppi_square, 2));
     let total_px_pretty = format_with_commas(handle.total_px);
-    let aspec_ration_formated = format!(
+    let aspect_ratio_pretty = format!(
         "{}/{} ({:.2}:1)",
         handle.aspect_ratio.0 as u32,
         handle.aspect_ratio.1 as u32,
@@ -17,14 +17,14 @@ fn main() {
     let table = vec![
         vec![
             "PPI".cell(),
-            ppi_rounded
+            ppi_pretty
                 .cell()
                 .justify(Justify::Right)
                 .foreground_color(Some(Color::Red)),
         ],
         vec![
             "PPI²".cell(),
-            ppi_square_rounded.cell().justify(Justify::Right),
+            ppi_square_pretty.cell().justify(Justify::Right),
         ],
         vec![
             "Total Px".cell(),
@@ -32,7 +32,7 @@ fn main() {
         ],
         vec![
             "Aspect ratio".cell(),
-            aspec_ration_formated.cell().justify(Justify::Right),
+            aspect_ratio_pretty.cell().justify(Justify::Right),
         ],
     ]
     .table()
