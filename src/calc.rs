@@ -108,7 +108,7 @@ impl PPIHandle {
 
         let (diagonal_in_pixels, aspect_ratio) = match state.0 {
             Some(State::NotAssigned) => {
-                eprintln!("\nNo resulution option were gieven, to list available options see --help note.\n");
+                eprintln!("\nNo resulution option were gieven, to list available options run ppi --help.\n");
                 std::process::exit(1);
             }
             Some(State::Assigned) => {
@@ -117,7 +117,7 @@ impl PPIHandle {
             }
             Some(State::Redundant) => {
                 eprintln!(
-                    "\nToo many resolution options were given, to list available options see --help note.\n"
+                    "\nToo many resolution options were given, to list available options run ppi --help.\n"
                 );
                 std::process::exit(1);
             }
