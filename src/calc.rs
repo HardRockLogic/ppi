@@ -1,4 +1,3 @@
-#![allow(dead_code, unused_variables)]
 use std::{eprintln, unreachable};
 
 use super::args::ScreenData;
