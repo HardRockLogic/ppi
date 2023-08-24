@@ -21,25 +21,25 @@ pass alternative dirs (note that they should be present in $PATH) as arguments a
 
 ```bash
 # this will launch default script
-chmod +x install_to.sh && ./update_bin.sh
+chmod +x install_to.sh && ./install_to.sh
 # enter your sudo password here
 ```
 
 or just run it with `bash` or `sh` without separatly giving execution permission
 
 ```bash
-bash update_bin.sh
+bash install_to.sh
 # enter your sudo password here
 ```
 
 alternatively pass another destination path
 
 ```bash
-sh update_bin.sh /usr/local/bin/
+sh install_to.sh /usr/local/bin/
 # enter your sudo password here
 ```
 
-**note** that script will not resolve tilda (~) so batter to write apsulute path or lerative to current working directory
+**note** that script will not resolve tilda (~) so batter to write absolute path or relative to current working directory
 
 From here you can delete file with source code and use standalone binary application.
 
