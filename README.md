@@ -16,25 +16,30 @@ Clone the project
 git clone https://github.com/HardRockLogic/ppi.git
 ```
 
-`cd` into directory you've cloned project to and build it.
+`cd` into directory you've cloned project to and run the installation script, by defalult it will copy compiled binary to `usr/bin/` as ppi, but you can
+pass alternative dirs (note that they should be present in $PATH) as arguments as well as renaming binary for example `usr/bin/ppi-calc`.
 
 ```bash
-cargo build --release
-```
-
-Then you have to add binary to your `$PATH` directory and you will be ready to use it. If you use Mac or Linux, and your `usr/bin/` directory have no other binaries named **ppi** you can just launch this script:
-
-```bash
-chmod +x update_bin.sh && ./update_bin.sh
+# this will launch default script
+chmod +x install_to.sh && ./update_bin.sh
 # enter your sudo password here
 ```
 
-or just run it with `bash` without separatly giving execution permission
+or just run it with `bash` or `sh` without separatly giving execution permission
 
 ```bash
 bash update_bin.sh
 # enter your sudo password here
 ```
+
+alternatively pass another destination path
+
+```bash
+sh update_bin.sh /usr/local/bin/
+# enter your sudo password here
+```
+
+**note** that script will not resolve tilda (~) so batter to write apsulute path or lerative to current working directory
 
 From here you can delete file with source code and use standalone binary application.
 
