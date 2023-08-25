@@ -17,7 +17,7 @@ git clone https://github.com/HardRockLogic/ppi.git
 ```
 
 `cd` into directory you've cloned project to and run the installation script, by defalult it will copy compiled binary to `usr/bin/` as ppi, but you can
-pass alternative dirs (note that they should be present in $PATH) as arguments as well as renaming binary for example `usr/bin/ppi-calc`.
+pass alternative dirs (note that they should be present in $PATH to be executed with just name) as an arguments.
 
 ```bash
 # this will launch default script
