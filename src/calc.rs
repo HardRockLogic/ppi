@@ -70,6 +70,8 @@ pub struct PPIHandle {
     pub ppi_square: f64,
     pub total_px: u32,
     pub aspect_ratio: (f64, f64),
+    pub diagonal_in_pixels: f64,
+    pub dot_pitch: f64,
 }
 
 impl PPIHandle {
@@ -124,6 +126,7 @@ impl PPIHandle {
         };
 
         let ppi = diagonal_in_pixels / data.diagonal as f64;
+        let dot_pitch = (data.diagonal as f64 / diagonal_in_pixels) * 25.4;
         let ppi_square = ppi * ppi;
 
         Self {
@@ -131,6 +134,8 @@ impl PPIHandle {
             ppi_square,
             total_px,
             aspect_ratio,
+            diagonal_in_pixels,
+            dot_pitch,
         }
     }
 }

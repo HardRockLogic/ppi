@@ -13,6 +13,8 @@ fn main() {
         handle.aspect_ratio.1 as u32,
         handle.aspect_ratio.0 / handle.aspect_ratio.1
     );
+    let diagonal_pix_pretty = format_with_commas(handle.diagonal_in_pixels.round());
+    let dot_pitch_pretty = round(handle.dot_pitch, 4);
 
     let table = vec![
         vec![
@@ -33,6 +35,14 @@ fn main() {
         vec![
             "Aspect ratio".cell(),
             aspect_ratio_pretty.cell().justify(Justify::Right),
+        ],
+        vec![
+            "Diagonal Px".cell(),
+            diagonal_pix_pretty.cell().justify(Justify::Right),
+        ],
+        vec![
+            "Dot pitch".cell(),
+            dot_pitch_pretty.cell().justify(Justify::Right),
         ],
     ]
     .table()
