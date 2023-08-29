@@ -104,7 +104,7 @@ ppi 27 --uhd
 
 # using image from docker hub
 
-node1] (local) root@192.168.0.8 ~
+[node1] (local) root@192.168.0.8 ~
 $ docker images
 REPOSITORY          TAG       IMAGE ID       CREATED        SIZE
 hardrocklogic/ppi   musl      2c09c57f19eb   23 hours ago   74.3MB
