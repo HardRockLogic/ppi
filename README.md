@@ -43,6 +43,14 @@ sh install_to.sh /usr/local/bin/
 
 From here you can delete file with source code and use standalone binary application.
 
+### Pulling image form dockerhub
+
+If you already have docker installed you can pull ppi from docker hub, this is as easy as:
+
+```bash
+docker pull hardrocklogic/ppi:musl
+```
+
 ## Usage
 
 You can run ppi --help to retrieve help message and view available options.
@@ -94,7 +102,12 @@ ppi 27 --uhd
 | Aspect ratio | 16/9 (1.78:1) |
 +--------------+---------------+
 
-# docker image usage
+# using image from docker hub
+
+node1] (local) root@192.168.0.8 ~
+$ docker images
+REPOSITORY          TAG       IMAGE ID       CREATED        SIZE
+hardrocklogic/ppi   musl      2c09c57f19eb   23 hours ago   74.3MB
 
 [node1] (local) root@192.168.0.8 ~
 $ docker run 2c09 32 -r 1366x768
