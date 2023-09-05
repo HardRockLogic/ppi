@@ -21,6 +21,24 @@ pub struct ScreenData {
     /// standart 16:9 ultra hd resollution (3840x2160)
     #[argh(switch, short = 'u')]
     pub(crate) uhd: bool,
+    /// resolve your ppi automaticly
+    #[argh(subcommand)]
+    auto_subcommand: Option<SubCommEnum>,
+}
+
+#[derive(FromArgs, Debug, Clone, Copy)]
+#[argh(subcommand)]
+enum SubCommEnum {
+    SubCommAuto(Auto),
+}
+
+#[derive(FromArgs, Debug, Clone, Copy)]
+/// auto reloslving current monitors ppi
+#[argh(subcommand, name = "auto")]
+struct Auto {
+    #[argh(switch, short = 'v')]
+    /// optional verboisty
+    verbose: bool,
 }
 
 fn parse_resolution(i: &str) -> Result<[u32; 2], String> {
