@@ -29,11 +29,11 @@ pub(crate) mod linux {
         //let (input, _) = take_while(|c| c != b'm')(input)?;
         //let (input, _) = char('m')(input)?;
         let first_portion = std::str::from_utf8(first_portion_utf8)
-            .unwrap()
+            .expect("Internal. Failed to parse utf8.")
             .parse::<f32>()
-            .unwrap();
+            .expect("failed to parse number");
         let second_portion = std::str::from_utf8(second_portion_utf8)
-            .unwrap()
+            .expect("Internal. Failed to parse utf8.")
             .parse::<f32>()
             .unwrap();
 
@@ -58,27 +58,29 @@ pub(crate) mod linux {
     pub(crate) struct PseudoScreenData {
         pub(crate) diagonal: f32,
         pub(crate) resolution: [u32; 2],
+        pub(crate) dims: [f32; 2],
     }
 
     impl PseudoScreenData {
         pub(crate) fn new() -> Self {
             let output = Command::new("xrandr")
                 .output()
-                .expect("failed to invoce xrandr");
+                .expect("failed to evoke xrandr");
 
-            let session_type = "XDG_SESSION_TYPE";
-
-            match env::var(session_type) {
-                Ok(val) => println!("Session type is {val}"),
-                Err(_) => eprintln!("{session_type} is not defined"),
-            }
+            // let session_type = "XDG_SESSION_TYPE";
+            //
+            // match env::var(session_type) {
+            //     Ok(val) => println!("Session type: {val}"),
+            //     Err(_) => eprintln!("{session_type} is not defined"),
+            // }
 
             let diagonal: f32;
             let resolution: [u32; 2];
+            let dims: [f32; 2];
 
             match parse_current_res(output.stdout.as_slice()) {
                 Ok((_, (frst, sec))) => {
-                    println!("Found resolution: {} x {}", frst, sec);
+                    // println!("Found resolution: {} x {}", frst, sec);
                     resolution = [frst, sec];
                 }
                 Err(_) => {
@@ -89,7 +91,8 @@ pub(crate) mod linux {
 
             match find_dimensions(output.stdout.as_slice()) {
                 Ok((_, (frst, sec))) => {
-                    println!("Found dimensions: {} x {}", frst, sec);
+                    // println!("Found dimensions: {} x {}", frst, sec);
+                    dims = [frst, sec];
                     diagonal = (frst.powi(2) + sec.powi(2)).sqrt() * 0.0393700787;
                 }
                 Err(_) => {
@@ -101,6 +104,7 @@ pub(crate) mod linux {
             Self {
                 diagonal,
                 resolution,
+                dims,
             }
         }
     }

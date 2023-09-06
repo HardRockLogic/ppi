@@ -86,13 +86,30 @@ impl PPIHandle {
         let diagonal = match data.diagonal {
             Some(value) => value,
             None => match data.auto_subcommand {
-                Some(SubCommEnum::SubCommAuto(_)) => {
+                Some(SubCommEnum::SubCommAuto(auto)) => {
                     #[cfg(target_os = "linux")]
                     let pseudo_data = linux::PseudoScreenData::new();
                     let width = pseudo_data.resolution[0] as f64;
                     let height = pseudo_data.resolution[1] as f64;
                     screen = ScreenEdges::new(width, height);
                     state.update();
+
+                    if auto.verbose {
+                        let session_type = "XDG_SESSION_TYPE";
+                        match std::env::var(session_type) {
+                            Ok(val) => println!("Session type: {val}"),
+                            Err(_) => eprintln!("{session_type} is not defined"),
+                        }
+                        println!("Found resolution: {} x {}", width as u32, height as u32);
+                        println!(
+                            "Found dimensions: {}mm x {}mm",
+                            pseudo_data.dims[0] as u32, pseudo_data.dims[1] as u32
+                        );
+                        println!(
+                            "Calculated diagonal: {}\"",
+                            round::round(pseudo_data.diagonal as f64, 1)
+                        );
+                    }
 
                     pseudo_data.diagonal
                 }
