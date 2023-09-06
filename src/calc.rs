@@ -1,6 +1,8 @@
 use std::{eprintln, unreachable};
 
 use super::args::ScreenData;
+use crate::args::SubCommEnum;
+use crate::auto::linux;
 
 #[derive(Default)]
 struct ScreenEdges {
@@ -81,6 +83,26 @@ impl PPIHandle {
         let mut screen = ScreenEdges::default();
         let mut state = StateTracker::new();
 
+        let diagonal = match data.diagonal {
+            Some(value) => value,
+            None => match data.auto_subcommand {
+                Some(SubCommEnum::SubCommAuto(_)) => {
+                    #[cfg(target_os = "linux")]
+                    let pseudo_data = linux::PseudoScreenData::new();
+                    let width = pseudo_data.resolution[0] as f64;
+                    let height = pseudo_data.resolution[1] as f64;
+                    screen = ScreenEdges::new(width, height);
+                    state.update();
+
+                    pseudo_data.diagonal
+                }
+                None => {
+                    eprintln!("\nNo diagonal option supplied\n");
+                    std::process::exit(1);
+                }
+            },
+        };
+
         if let Some(edges) = data.resolution {
             let width = edges[0] as f64;
             let height = edges[1] as f64;
@@ -125,8 +147,8 @@ impl PPIHandle {
             None => unreachable!(),
         };
 
-        let ppi = diagonal_in_pixels / data.diagonal as f64;
-        let dot_pitch = (data.diagonal as f64 / diagonal_in_pixels) * 25.4;
+        let ppi = diagonal_in_pixels / diagonal as f64;
+        let dot_pitch = (diagonal as f64 / diagonal_in_pixels) * 25.4;
         let ppi_square = ppi * ppi;
 
         Self {

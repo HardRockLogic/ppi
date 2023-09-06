@@ -1,7 +1,7 @@
 #![allow(unused_imports)]
 
 #[cfg(target_os = "linux")]
-mod linux {
+pub(crate) mod linux {
 
     use nom::{
         bytes::complete::{tag, take_until, take_while},

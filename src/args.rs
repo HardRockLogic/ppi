@@ -5,7 +5,7 @@ use argh::FromArgs;
 pub struct ScreenData {
     /// screen diagonal value
     #[argh(positional)]
-    pub(crate) diagonal: f32,
+    pub(crate) diagonal: Option<f32>,
     /// custom resolution in format 1366x768 where x is any alphabetic character
     #[argh(option, short = 'r', from_str_fn(parse_resolution))]
     pub(crate) resolution: Option<[u32; 2]>,
@@ -23,22 +23,22 @@ pub struct ScreenData {
     pub(crate) uhd: bool,
     /// resolve your ppi automaticly
     #[argh(subcommand)]
-    auto_subcommand: Option<SubCommEnum>,
+    pub(crate) auto_subcommand: Option<SubCommEnum>,
 }
 
 #[derive(FromArgs, Debug, Clone, Copy)]
 #[argh(subcommand)]
-enum SubCommEnum {
+pub(crate) enum SubCommEnum {
     SubCommAuto(Auto),
 }
 
 #[derive(FromArgs, Debug, Clone, Copy)]
 /// auto reloslving current monitors ppi
 #[argh(subcommand, name = "auto")]
-struct Auto {
+pub(crate) struct Auto {
     #[argh(switch, short = 'v')]
     /// optional verboisty
-    verbose: bool,
+    pub(crate) verbose: bool,
 }
 
 fn parse_resolution(i: &str) -> Result<[u32; 2], String> {
