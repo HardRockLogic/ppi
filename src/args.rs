@@ -21,7 +21,7 @@ pub struct ScreenData {
     /// standart 16:9 ultra hd resollution (3840x2160)
     #[argh(switch, short = 'u')]
     pub(crate) uhd: bool,
-    /// resolve your ppi automaticly
+    /// resolve your ppi automaticly --- Currently for linux ONLY ---
     #[argh(subcommand)]
     pub(crate) auto_subcommand: Option<SubCommEnum>,
 }
