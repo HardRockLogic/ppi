@@ -21,7 +21,7 @@ pub struct ScreenData {
     /// standart 16:9 ultra hd resollution (3840x2160)
     #[argh(switch, short = 'u')]
     pub(crate) uhd: bool,
-    /// resolve your ppi automaticly --- Currently for linux ONLY ---
+    /// resolve your ppi automaticly
     #[argh(subcommand)]
     pub(crate) auto_subcommand: Option<SubCommEnum>,
 }
@@ -33,7 +33,7 @@ pub(crate) enum SubCommEnum {
 }
 
 #[derive(FromArgs, Debug, Clone, Copy)]
-/// auto reloslving current monitors ppi
+/// auto reloslving current monitors ppi  --- Currently for linux ONLY ---
 #[argh(subcommand, name = "auto")]
 pub(crate) struct Auto {
     #[argh(switch, short = 'v')]
