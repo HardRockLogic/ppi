@@ -89,6 +89,7 @@ impl PPIHandle {
                 Some(SubCommEnum::SubCommAuto(auto)) => {
                     #[cfg(target_os = "linux")]
                     let pseudo_data = linux::PseudoScreenData::new();
+
                     #[cfg(target_os = "macos")]
                     {
                         eprintln!("Currently not supported for macOS");
@@ -99,6 +100,7 @@ impl PPIHandle {
                         eprintln!("Currently not supported for windows");
                         std::process::exit(1);
                     }
+
                     let width = pseudo_data.resolution[0] as f64;
                     let height = pseudo_data.resolution[1] as f64;
                     screen = ScreenEdges::new(width, height);
