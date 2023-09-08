@@ -26,8 +26,6 @@ pub(crate) mod linux {
         let parsed_iter = parsed.split(|&b| b == b' ');
         let second_portion_utf8 = parsed_iter.last().unwrap();
 
-        //let (input, _) = take_while(|c| c != b'm')(input)?;
-        //let (input, _) = char('m')(input)?;
         let first_portion = std::str::from_utf8(first_portion_utf8)
             .expect("Internal. Failed to parse utf8.")
             .parse::<f32>()
@@ -63,16 +61,10 @@ pub(crate) mod linux {
 
     impl PseudoScreenData {
         pub(crate) fn new() -> Self {
-            let output = Command::new("xrandr")
-                .output()
-                .expect("failed to evoke xrandr");
-
-            // let session_type = "XDG_SESSION_TYPE";
-            //
-            // match env::var(session_type) {
-            //     Ok(val) => println!("Session type: {val}"),
-            //     Err(_) => eprintln!("{session_type} is not defined"),
-            // }
+            let output = Command::new("xrandr").output().unwrap_or_else(|err| {
+                eprintln!("Failed to envoke xrandr: {err:?}");
+                process::exit(1);
+            });
 
             let diagonal: f32;
             let resolution: [u32; 2];
@@ -80,7 +72,6 @@ pub(crate) mod linux {
 
             match parse_current_res(output.stdout.as_slice()) {
                 Ok((_, (frst, sec))) => {
-                    // println!("Found resolution: {} x {}", frst, sec);
                     resolution = [frst, sec];
                 }
                 Err(_) => {
@@ -91,7 +82,6 @@ pub(crate) mod linux {
 
             match find_dimensions(output.stdout.as_slice()) {
                 Ok((_, (frst, sec))) => {
-                    // println!("Found dimensions: {} x {}", frst, sec);
                     dims = [frst, sec];
                     diagonal = (frst.powi(2) + sec.powi(2)).sqrt() * 0.0393700787;
                 }
