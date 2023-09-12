@@ -1,16 +1,14 @@
-#![allow(unused_imports)]
-
 #[cfg(target_os = "linux")]
 pub(crate) mod linux {
 
     use nom::{
         bytes::complete::{tag, take_until, take_while},
         character::complete::{self as cc, char},
-        sequence::{preceded, separated_pair, tuple},
+        sequence::{preceded, separated_pair},
         IResult,
     };
     use std::{
-        env, eprintln, println,
+        eprintln, println,
         process::{self, Command},
     };
 
