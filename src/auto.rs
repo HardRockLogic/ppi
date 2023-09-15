@@ -31,7 +31,7 @@ pub(crate) mod linux {
         let second_portion = std::str::from_utf8(second_portion_utf8)
             .expect("Internal. Failed to parse utf8.")
             .parse::<f32>()
-            .unwrap();
+            .expect("failed to parse number");
 
         Ok((leftover, (first_portion, second_portion)))
     }
