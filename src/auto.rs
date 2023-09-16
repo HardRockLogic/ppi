@@ -73,7 +73,7 @@ pub(crate) mod linux {
                     resolution = [frst, sec];
                 }
                 Err(_) => {
-                    println!("Pattern not found");
+                    eprintln!("Pattern not found");
                     process::exit(1);
                 }
             }
@@ -84,7 +84,7 @@ pub(crate) mod linux {
                     diagonal = (frst.powi(2) + sec.powi(2)).sqrt() * 0.0393700787;
                 }
                 Err(_) => {
-                    println!("Pattern not found");
+                    eprintln!("Pattern not found");
                     process::exit(1);
                 }
             }
