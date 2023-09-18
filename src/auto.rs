@@ -8,7 +8,7 @@ pub(crate) mod linux {
         IResult,
     };
     use std::{
-        eprintln, println,
+        eprintln,
         process::{self, Command},
     };
 
