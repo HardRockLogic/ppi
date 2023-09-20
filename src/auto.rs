@@ -51,6 +51,24 @@ pub(crate) mod linux {
         parse_res(remainder)
     }
 
+    // alternative more simple all in one parser.
+    // require --listmonitors arg to be streamed into parser.
+    // currently doesnt not solve issue with grabbing just first monitor
+    // and not necessaril primary one.
+
+    fn parse_all(i: &[u8]) -> IResult<&[u8], ((u32, u32), (u32, u32))> {
+        let (rest, first_part) = take_until("x")(i)?;
+
+        let left_portion = first_part.split(|&b| b == b' ').last().unwrap();
+
+        let (_, (left_res, left_size)) = separated_pair(cc::u32, tag("/"), cc::u32)(left_portion)?;
+
+        let (leftover, (right_res, right_size)) =
+            preceded(tag("x"), separated_pair(cc::u32, tag("/"), cc::u32))(rest)?;
+
+        Ok((leftover, ((left_res, right_res), (left_size, right_size))))
+    }
+
     pub(crate) struct PseudoScreenData {
         pub(crate) diagonal: f32,
         pub(crate) resolution: [u32; 2],
