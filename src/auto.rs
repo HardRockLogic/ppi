@@ -54,7 +54,6 @@ pub(crate) mod linux {
     // require --listmonitors arg to be streamed into parser.
     // currently doesnt not solve issue with grabbing just first monitor
     // and not necessaril primary one.
-
     fn parse_all(i: &[u8]) -> IResult<&[u8], ((u32, u32), (u32, u32))> {
         let (rest, first_part) = take_until("x")(i)?;
 
