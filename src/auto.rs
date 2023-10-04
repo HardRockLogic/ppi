@@ -84,20 +84,35 @@ pub(crate) mod linux {
             let resolution: [u32; 2];
             let dims: [f32; 2];
 
-            match parse_current_res(output.stdout.as_slice()) {
-                Ok((_, (frst, sec))) => {
-                    resolution = [frst, sec];
-                }
-                Err(_) => {
-                    eprintln!("Pattern not found");
-                    process::exit(1);
-                }
-            }
+            // match parse_current_res(output.stdout.as_slice()) {
+            //     Ok((_, (frst, sec))) => {
+            //         resolution = [frst, sec];
+            //     }
+            //     Err(_) => {
+            //         eprintln!("Pattern not found");
+            //         process::exit(1);
+            //     }
+            // }
+            //
+            // match find_dimensions(output.stdout.as_slice()) {
+            //     Ok((_, (frst, sec))) => {
+            //         dims = [frst, sec];
+            //         diagonal = (frst.powi(2) + sec.powi(2)).sqrt() * 0.0393700787;
+            //     }
+            //     Err(_) => {
+            //         eprintln!("Pattern not found");
+            //         process::exit(1);
+            //     }
+            // }
 
-            match find_dimensions(output.stdout.as_slice()) {
-                Ok((_, (frst, sec))) => {
-                    dims = [frst, sec];
-                    diagonal = (frst.powi(2) + sec.powi(2)).sqrt() * 0.0393700787;
+            match parse_all(output.stdout.as_slice()) {
+                Ok((_, ((left_res, right_res), (left_size, right_size)))) => {
+                    resolution = [left_res, right_res];
+                    let left_dim = left_size as f32;
+                    let right_dim = right_size as f32;
+
+                    dims = [left_dim, right_dim];
+                    diagonal = (left_dim.powi(2) + right_dim.powi(2)).sqrt() * 0.0393700787;
                 }
                 Err(_) => {
                     eprintln!("Pattern not found");
