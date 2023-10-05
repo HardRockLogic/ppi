@@ -11,44 +11,44 @@ pub(crate) mod linux {
         process::{self, Command},
     };
 
-    fn find_dimensions(input: &[u8]) -> IResult<&[u8], (f32, f32)> {
-        let (input, parsed) = take_until("mm")(input)?;
-        let parsed_iter = parsed.split(|&b| b == b' ');
-        let first_portion_utf8 = parsed_iter.last().unwrap();
-
-        let (input, _) = take_while(|c| c != b'x')(input)?;
-        let (input, _) = char('x')(input)?;
-
-        let (leftover, parsed) = take_until("mm")(input)?;
-        let parsed_iter = parsed.split(|&b| b == b' ');
-        let second_portion_utf8 = parsed_iter.last().unwrap();
-
-        let first_portion = std::str::from_utf8(first_portion_utf8)
-            .expect("Internal. Failed to parse utf8.")
-            .parse::<f32>()
-            .expect("failed to parse number");
-        let second_portion = std::str::from_utf8(second_portion_utf8)
-            .expect("Internal. Failed to parse utf8.")
-            .parse::<f32>()
-            .expect("failed to parse number");
-
-        Ok((leftover, (first_portion, second_portion)))
-    }
-
-    fn parse_res(i: &[u8]) -> IResult<&[u8], (u32, u32)> {
-        let (leftover, (left, right)) = preceded(
-            tag("current "),
-            separated_pair(cc::u32, tag(" x "), cc::u32),
-        )(i)?;
-
-        Ok((leftover, (left, right)))
-    }
-
-    fn parse_current_res(i: &[u8]) -> IResult<&[u8], (u32, u32)> {
-        let (remainder, _) = take_until("current")(i)?;
-
-        parse_res(remainder)
-    }
+    // fn find_dimensions(input: &[u8]) -> IResult<&[u8], (f32, f32)> {
+    //     let (input, parsed) = take_until("mm")(input)?;
+    //     let parsed_iter = parsed.split(|&b| b == b' ');
+    //     let first_portion_utf8 = parsed_iter.last().unwrap();
+    //
+    //     let (input, _) = take_while(|c| c != b'x')(input)?;
+    //     let (input, _) = char('x')(input)?;
+    //
+    //     let (leftover, parsed) = take_until("mm")(input)?;
+    //     let parsed_iter = parsed.split(|&b| b == b' ');
+    //     let second_portion_utf8 = parsed_iter.last().unwrap();
+    //
+    //     let first_portion = std::str::from_utf8(first_portion_utf8)
+    //         .expect("Internal. Failed to parse utf8.")
+    //         .parse::<f32>()
+    //         .expect("failed to parse number");
+    //     let second_portion = std::str::from_utf8(second_portion_utf8)
+    //         .expect("Internal. Failed to parse utf8.")
+    //         .parse::<f32>()
+    //         .expect("failed to parse number");
+    //
+    //     Ok((leftover, (first_portion, second_portion)))
+    // }
+    //
+    // fn parse_res(i: &[u8]) -> IResult<&[u8], (u32, u32)> {
+    //     let (leftover, (left, right)) = preceded(
+    //         tag("current "),
+    //         separated_pair(cc::u32, tag(" x "), cc::u32),
+    //     )(i)?;
+    //
+    //     Ok((leftover, (left, right)))
+    // }
+    //
+    // fn parse_current_res(i: &[u8]) -> IResult<&[u8], (u32, u32)> {
+    //     let (remainder, _) = take_until("current")(i)?;
+    //
+    //     parse_res(remainder)
+    // }
 
     // alternative more simple all in one parser.
     // require --listmonitors arg to be streamed into parser.
@@ -75,10 +75,13 @@ pub(crate) mod linux {
 
     impl PseudoScreenData {
         pub(crate) fn new() -> Self {
-            let output = Command::new("xrandr").output().unwrap_or_else(|err| {
-                eprintln!("Failed to envoke xrandr: {err:?}");
-                process::exit(1);
-            });
+            let output = Command::new("xrandr")
+                .arg("--listmonitors")
+                .output()
+                .unwrap_or_else(|err| {
+                    eprintln!("Failed to envoke xrandr: {err:?}");
+                    process::exit(1);
+                });
 
             let diagonal: f32;
             let resolution: [u32; 2];
