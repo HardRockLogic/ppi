@@ -1,8 +1,8 @@
 pub(crate) mod linux {
 
     use nom::{
-        bytes::complete::{tag, take_until, take_while},
-        character::complete::{self as cc, char},
+        bytes::complete::{tag, take_until},
+        character::complete as cc,
         sequence::{preceded, separated_pair},
         IResult,
     };
